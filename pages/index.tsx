@@ -16,7 +16,7 @@ export default function Home() {
       <main>
         <h2>RSS Reader</h2>
         <Grid container spacing={2}>
-          <Grid item xs={8}>
+          <Grid item xs={6} md={12}>
             <RssInputForm
               textValue={rssURL}
               textInputId="rss-form-input"
