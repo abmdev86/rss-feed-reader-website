@@ -27,3 +27,7 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 ## Demo
 
 ## Deployment
+
+### Resources
+
+['RSS Specs'](https://validator.w3.org/feed/docs/rss2.html#requiredChannelElements)

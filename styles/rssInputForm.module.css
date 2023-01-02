@@ -1,0 +1,23 @@
+.rssForm {
+  text-align: center;
+  padding: 0.5rem;
+  text-align: center;
+  width: 100%;
+  padding-bottom: 100px;
+}
+
+.rssForm > button {
+  margin: 2%;
+}
+@media screen and (max-width < 670px) {
+  .rssForm {
+    display: block;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .rssForm > button {
+    margin: auto;
+    margin-top: 6px;
+  }
+}

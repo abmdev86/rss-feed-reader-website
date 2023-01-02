@@ -1,0 +1,15 @@
+.mainGrid {
+  margin: auto;
+  flex-grow: 1;
+  align-items: center;
+}
+.mainGrid > h2 {
+  text-align: center;
+}
+
+@media screen and (max-width < 670px) {
+  .mainGrid {
+    display: block;
+    margin: auto;
+  }
+}
