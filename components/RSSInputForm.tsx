@@ -1,23 +1,42 @@
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import styles from "../styles/rssInputForm.module.css";
+import { useState } from "react";
+import getFeed from "../lib/rssHelpers";
 
 interface RssInputFormProps {
-  textValue: string;
   textInputLabel?: string;
-  textInputId?: string;
+  handleSubmit: Function;
 }
 
 export default function RssInputForm(props: RssInputFormProps): JSX.Element {
-  const { textValue, textInputLabel, textInputId } = { ...props };
+  const { textInputLabel, handleSubmit } = { ...props };
+  const [value, setValue] = useState("");
+
+  const handleOnChange = (event: React.BaseSyntheticEvent) => {
+    setValue(event.target.value);
+    console.log(event.target.value);
+  };
+
+  const handleOnSubmit = async (event: React.BaseSyntheticEvent) => {
+    event.preventDefault();
+    handleSubmit(value);
+  };
 
   return (
-    <form>
+    <form id="rss-form" className={styles.rssForm} onSubmit={handleOnSubmit}>
       <TextField
+        type="url"
         label={textInputLabel ? textInputLabel : "Rss Input Form"}
-        id={textInputId ? textInputId : "rss-input-form-text"}
-        value={textValue}
+        id="rss-form-input-text"
+        value={value}
+        onChange={handleOnChange}
+        name="rssUrl"
+        required
       />
-      <Button variant="contained">Submit</Button>
+      <Button variant="contained" type="submit">
+        Submit
+      </Button>
     </form>
   );
 }
