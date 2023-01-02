@@ -3,17 +3,18 @@ import { useState } from "react";
 import Grid from "@mui/material/Grid";
 import RssInputForm from "../components/RSSInputForm";
 import styles from "../styles/home.module.css";
-import getFeed from "../lib/rssHelpers";
+import getFeed, { RssElementData } from "../lib/rssHelpers";
 import RssFeedItemsDisplay from "../components/RssFeedItemsDisplay";
 export default function Home() {
-  const [currentData, setCurrentData] = useState<any[]>([]);
+  const [currentData, setCurrentData] = useState<RssElementData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const getRssFeedData = async (formValue: string) => {
-    let results: any[] = [];
+    let results: RssElementData[] = [];
     setIsLoading(true);
+
     await getFeed(formValue).then((data) => {
-      let { ...resultsObj } = data;
-      Object.values(resultsObj).forEach((result) => {
+      let res = { ...data };
+      Object.values(res).forEach((result) => {
         results.push(result);
       });
       setCurrentData(results);
