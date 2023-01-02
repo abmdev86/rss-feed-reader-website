@@ -1,5 +1,7 @@
 # Rss Feed Reader Website
 
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/abmdev86/rss-feed-reader-website/main)
+
 # NEXTJS Docs:
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
@@ -27,6 +29,9 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 ## Demo
 
 ## Deployment
+
+Deployed on Heroku:
+['View Here'](https://rss-feed-reader.herokuapp.com/)
 
 ### Resources
 
