@@ -16,3 +16,6 @@ h6 {
   font-family: "Inter", sans-serif;
   text-align: center;
 }
+ul {
+  list-style: none;
+}

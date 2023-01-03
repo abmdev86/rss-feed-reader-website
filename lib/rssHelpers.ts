@@ -1,40 +1,51 @@
-import Parser from "rss-parser";
+import Parser, { Enclosure } from "rss-parser";
 
-const parser = new Parser();
+const parser = new Parser<RssElementData>({
+  customFields: {
+    item: [
+      "title",
+      "guid",
+      "content",
+      "contentEncoded",
+      "enclosure",
+      "itunes",
+      "pubDate",
+    ],
+  },
+});
 
 export type RssElementData = {
-  title: string;
-  guid: string
-  content: string;
-  contentEncoded: string;
-  enclosure?: {
-    length?: string;
-    type?: string;
-    url: string;
-  }
+  title?: string;
+  guid?: string;
+  content?: string;
+  contentEncoded?: string;
+  enclosure?: Enclosure;
   itunes?: {
     summary?: string;
     explicit?: boolean;
     duration?: string;
     image?: string;
-    keywords?: string
-
+    keywords?: string;
   };
-  pubDate: string;
+  pubDate?: string;
+  link?: string;
 };
 
 export default async function getFeed(url: string) {
-  let feedItems: any[] = [];
+  let feedItems: RssElementData[] = [];
   try {
     const feed = await parser.parseURL(url);
 
     feed.items.forEach((item) => {
-      feedItems.push(item);
+      let newItem = { ...item };
+      if (newItem) {
+        feedItems.push(newItem);
+      }
     });
 
-    console.log("array i should get", feedItems);
     return feedItems;
   } catch (error) {
     console.error(error);
+    return null;
   }
 }
