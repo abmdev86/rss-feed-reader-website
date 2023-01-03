@@ -1,26 +1,38 @@
 import Head from "next/head";
 import { useState } from "react";
-import Grid from "@mui/material/Grid";
 import RssInputForm from "../components/RSSInputForm";
-import styles from "../styles/home.module.css";
 import getFeed, { RssElementData } from "../lib/rssHelpers";
 import RssFeedItemsDisplay from "../components/RssFeedItemsDisplay";
+import ProgressLoad from "../components/ProgressLoad";
+import { ErrorDisplay } from "../components/ErrorDisplay";
+import { Box, Typography } from "@mui/material";
+import Link from "next/link";
+
 export default function Home() {
   const [currentData, setCurrentData] = useState<RssElementData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false);
+
   const getRssFeedData = async (formValue: string) => {
     let results: RssElementData[] = [];
     setIsLoading(true);
 
-    await getFeed(formValue).then((data) => {
+    await getFeed(formValue).then((data: RssElementData[] | null) => {
       let res = { ...data };
+      console.log("res", res);
+      if (Object.keys(res).length === 0) {
+        setHasError(true);
+        setIsLoading(false);
+        return;
+      }
       Object.values(res).forEach((result) => {
-        results.push(result);
+        results.push(result as RssElementData);
       });
       setCurrentData(results);
       setIsLoading(false);
     });
   };
+
   return (
     <>
       <Head>
@@ -29,23 +41,30 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <h2>RSS Reader</h2>
-
-      <Grid container spacing={2} sx={{ ...styles }}>
-        <Grid item xs={6} md={12}></Grid>
-        <Grid item xs={12} md={12}>
-          <RssInputForm
-            textInputLabel="Enter RSS URL"
-            handleSubmit={getRssFeedData}
-          />
-        </Grid>
-        <Grid item>
-          {isLoading ? (
-            <p>Loading</p>
-          ) : (
-            <RssFeedItemsDisplay currentData={currentData} />
-          )}
-        </Grid>
-      </Grid>
+      {hasError ? (
+        <ErrorDisplay message="An Error Occured: No Data Available, try another URL" />
+      ) : null}
+      <RssInputForm
+        textInputLabel="Enter RSS URL"
+        handleSubmit={getRssFeedData}
+      />
+      {currentData.length === 0 ? <Instructions /> : null}
+      {isLoading ? (
+        <ProgressLoad />
+      ) : (
+        <RssFeedItemsDisplay currentData={currentData} />
+      )}
     </>
   );
 }
+
+const Instructions = () => (
+  <Box sx={{ margin: "auto" }}>
+    <Typography sx={{ textAlign: "center" }}>
+      Search a valid Rss URL (example){" "}
+      <Link href="https://feeds.simplecast.com/qm_9xx0g" target="_blank">
+        https://feeds.simplecast.com/qm_9xx0g
+      </Link>
+    </Typography>
+  </Box>
+);
